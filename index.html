@@ -11,16 +11,20 @@
 
 <body>
     <h1 id="page-heading">ROCK PAPER SCISSORS</h1>
+    <section id="scores">
+        <div class="score-box" id="player-score">Player score: 0</div>
+        <div class="score-box" id="cpu-score">CPU score: 0</div>
+        <div class="result-box"></div>
+    </section>
     <section id="player-buttons">
         <button class="player-selecton" id="rock">Rock</button>
         <button class="player-selecton" id="paper">Paper</button>
         <button class="player-selecton" id="scissors">Scissors</button>
     </section>
-    <div class="player-info"></div>
-    <div class="cpu-info"></div>
-    <div class="score-box" id="player-score">Player score:</div>
-    <div class="score-box" id="cpu-score">CPU score:</div>
-    <div class="result-box"></div>
+    <section id="game-info">
+        <div class="round-info" id="player-info"></div>
+        <div class="round-info" id="cpu-info"></div>
+    </section>
 </body>
 <script src="./script.js"></script>
 

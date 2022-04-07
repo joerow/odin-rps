@@ -45,58 +45,15 @@ function runRound(playerSelection, cpuSelection) {
     }
 }
 let playerScore = 0;
+const playerScoreBox = document.querySelector('#player-score');
+
 let cpuScore = 0;
+const cpuScoreBox = document.querySelector('#cpu-score');
+
 let result = "";
-function game() {
+const roundResult = document.querySelector('.result-box');
 
-    // //    console.log("welcome to the game");
-    //     for (let i = 0; i < 5; i++) {
-
-    //         // start of the round
-    //         console.log("round " + (i + 1));
-
-    //         //collects the player selection
-    //         const message = "Enter your choice, rock, paper or scissors";
-    //         const playerSelection = (window.prompt(message).toLowerCase());
-
-    //         //collects the cpu selection
-    //         const cpuSelection = cpuPlay();
-
-    //         round = playRound(playerSelection, cpuSelection);
-    //         console.log(round[0]);
-
-    //         //add round score to total
-    //         if (round[1] == 1) {
-    //             playerScore += 1;
-    //         } else if (round[1] == -1) {
-    //             cpuScore += 1;
-    //         }
-
-    //         // end of the round
-    //         console.log("round " + (i + 1) + " complete.");
-    //     }
-
-    //     //determine final result text
-    //     if (playerScore == cpuScore) {
-    //         result = "draw";
-    //     } else if (playerScore > cpuScore) {
-    //         result = "win";
-    //     } else {
-    //         result = "lose";
-    //     }
-
-    //     //display the result
-    //     console.log("You scored " + playerScore + ", the cpu scored "
-    //         + cpuScore + " hence you " + result);
-
-}
-
-//game()
-
-// function logText(e){
-//     console.log(this.id);
-//    // e.stopPropagation(); //stop bubbling 
-//   }
+let gameOver = false;
 
 function updateScore(update) {
     if (update == 1) {
@@ -106,10 +63,24 @@ function updateScore(update) {
     } else {
         //do nothing
     }
+    cpuScoreBox.textContent = 'CPU score: ' + cpuScore;
+    playerScoreBox.textContent = 'Player score: ' + playerScore;
+    if (playerScore == 5 || cpuScore == 5) {
+        roundResult.textContent = determineWinner() + " wins!";
+        gameOver = true;
+    }
+    if (gameOver){
+        const restart = document.createElement('button');
+        const gameInfo = document.querySelector('#game-info');
+        restart.classList.add('restart-btn');
+        restart.textContent = 'Play again!';
+        gameInfo.appendChild(restart);
+        restart.addEventListener('click', resetGame);
+    }
 }
 
-function determineWinner(){
-    if (playerScore > cpuScore){
+function determineWinner() {
+    if (playerScore > cpuScore) {
         return "Player"
     } else return "CPU"
 }
@@ -118,24 +89,34 @@ function playRound(e) {
     if (playerScore < 5 && cpuScore < 5) {
         const cpuSelection = cpuPlay();
         const playerSelection = this.id;
-        const playerInfo = document.querySelector('.player-info');
-        const cpuInfo = document.querySelector('.cpu-info');
+        const playerInfo = document.querySelector('#player-info');
+        const cpuInfo = document.querySelector('#cpu-info');
         playerInfo.textContent = "Player chose " + playerSelection;
         cpuInfo.textContent = "CPU chose " + cpuSelection;
         round = runRound(playerSelection, cpuSelection);
-        console.log(round[0]);
         updateScore(round[1]);
-        const playerScoreBox = document.querySelector('#player-score');
-        const cpuScoreBox = document.querySelector('#cpu-score');
-        cpuScoreBox.textContent = 'CPU score: ' + cpuScore;
-        playerScoreBox.textContent = 'Player score: ' + playerScore;
-    } else {
-        const roundResult = document.querySelector('.result-box');
-        roundResult.textContent = determineWinner() + " wins!";
-
     }
 }
 
-const playerOptions = document.querySelectorAll('.player-selecton');
-//const cpuSelection = cpuPlay();
-playerOptions.forEach(btn => btn.addEventListener('click', playRound));
+function game() {
+    const playerOptions = document.querySelectorAll('.player-selecton');
+    playerOptions.forEach(btn => btn.addEventListener('click', playRound));
+}
+
+function resetGame(){
+    const gameInfo = document.querySelector('#game-info');
+    const restart = document.querySelector('.restart-btn');
+    gameInfo.removeChild(restart);
+    playerScore = 0;
+    cpuScore = 0;
+    cpuScoreBox.textContent = 'CPU score: ' + cpuScore;
+    playerScoreBox.textContent = 'Player score: ' + playerScore;
+    gameOver = false;
+    roundResult.textContent = "";
+    const playerInfo = document.querySelector('#player-info');
+    const cpuInfo = document.querySelector('#cpu-info');
+    playerInfo.textContent = "";
+    cpuInfo.textContent = "";
+}
+
+game()
